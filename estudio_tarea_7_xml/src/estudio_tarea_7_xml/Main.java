@@ -7,6 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		GestorAlumnos gestor = new GestorAlumnos();
 		File ficheroXML = gestor.solicitarFicheroXML();
-		gestor.generaXMLdesdeLista(gestor.leeAlumnos(), ficheroXML);
+		//gestor.generaXMLdesdeListaDatosComoEtiquetas(gestor.leeAlumnos(), ficheroXML);
+		
+		gestor.generaXMLdesdeListaDatosComoAtributos(gestor.leeAlumnos(), ficheroXML);
 	}
 }

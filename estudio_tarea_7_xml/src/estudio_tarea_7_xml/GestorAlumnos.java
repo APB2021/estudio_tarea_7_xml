@@ -69,7 +69,7 @@ public class GestorAlumnos {
 		return alumnos;
 	}
 
-	public void generaXMLdesdeLista(List<Alumno> listaAlumnos, File ficheroXML) {
+	public void generaXMLdesdeListaDatosComoEtiquetas(List<Alumno> listaAlumnos, File ficheroXML) {
 
 		try {
 			DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
@@ -106,7 +106,49 @@ public class GestorAlumnos {
 			System.out.println("El archivo XML ha sido generado exitosamente.");
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.err.println("Error al generar el archivo XML: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public void generaXMLdesdeListaDatosComoAtributos(List<Alumno> listaAlumnos, File ficheroXML) {
+
+		try {
+			DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+
+			Document document = documentBuilder.newDocument();
+
+			Element root = document.createElement("alumnos");
+			document.appendChild(root);
+
+			for (Alumno objetoAlumno : listaAlumnos) {
+
+				Element alumno = document.createElement("alumno");
+				root.appendChild(alumno);
+				alumno.setAttribute("nia", Integer.toString(objetoAlumno.getNia()));
+				alumno.setAttribute("nombre", objetoAlumno.getNombre());
+				alumno.setAttribute("apellidos", objetoAlumno.getApellidos());
+				alumno.setAttribute("genero", Character.toString(objetoAlumno.getGenero()));
+				alumno.setAttribute("fechaNacimiento", objetoAlumno.getFechaNacimiento().toString());
+				alumno.setAttribute("ciclo", objetoAlumno.getCiclo());
+				alumno.setAttribute("curso", objetoAlumno.getCurso());
+				alumno.setAttribute("grupo", objetoAlumno.getGrupo());
+			}
+
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			// StreamResult result = new StreamResult(new File("alumnos.xml"));
+			StreamResult result = new StreamResult((ficheroXML));
+
+			transformer.transform(source, result);
+
+			System.out.println("El archivo XML con atributos ha sido generado exitosamente.");
+
+		} catch (Exception e) {
+			System.err.println("Error al generar el archivo XML: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
